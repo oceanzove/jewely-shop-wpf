@@ -4,8 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JewelyShop", "JewelyShop\JewelyShop.csproj", "{6BB7CC9A-EBF3-4D1D-A15F-E3C786F6256E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BCC11385-4B2C-4DE9-A809-EF102506CF90} = {BCC11385-4B2C-4DE9-A809-EF102506CF90}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{99BA5F54-B7C3-4789-957A-39A220353AF9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{BCC11385-4B2C-4DE9-A809-EF102506CF90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +20,10 @@ Global
 		{6BB7CC9A-EBF3-4D1D-A15F-E3C786F6256E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BB7CC9A-EBF3-4D1D-A15F-E3C786F6256E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BB7CC9A-EBF3-4D1D-A15F-E3C786F6256E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{99BA5F54-B7C3-4789-957A-39A220353AF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99BA5F54-B7C3-4789-957A-39A220353AF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99BA5F54-B7C3-4789-957A-39A220353AF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99BA5F54-B7C3-4789-957A-39A220353AF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCC11385-4B2C-4DE9-A809-EF102506CF90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCC11385-4B2C-4DE9-A809-EF102506CF90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCC11385-4B2C-4DE9-A809-EF102506CF90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCC11385-4B2C-4DE9-A809-EF102506CF90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

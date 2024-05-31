@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JewelyShop.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,11 @@ namespace JewelyShop
         public MainWindow()
         {
             InitializeComponent();
+
+            var signInWindow = ViewManager.SignIn;
+            signInWindow.Show();
+            this.Close();
+
         }
     }
 }

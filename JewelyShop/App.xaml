@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:JewelyShop"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style x:Key="MainWindowStyle" TargetType="{x:Type Window}">
+            <Setter Property="FontFamily" Value="Comic Sans MS"/>
+        </Style>
     </Application.Resources>
 </Application>

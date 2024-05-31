@@ -1,0 +1,32 @@
+﻿<Window x:Class="JewelyShop.Components.Pages.SignIn"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JewelyShop.Components.Pages"
+        mc:Ignorable="d"
+        Style="{StaticResource MainWindowStyle}"
+        Title="SignIn" Height="500" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+
+        <StackPanel HorizontalAlignment="Center">
+            <Image Source="/Media/logo.png" Width="50"/>
+            <TextBlock>Jewelry Shop</TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+            <Label>Логин</Label>
+            <TextBox TextChanged="OnInputChange" Name="tbLogin"></TextBox>
+
+            <Label>Пароль</Label>
+            <PasswordBox PasswordChanged="OnInputChange" Name="pbPassword"></PasswordBox>
+
+            <StackPanel Visibility="Collapsed" Name="spCaptcha">
+                <Canvas Name="canvas" Height="60"/>
+                <TextBox Name="tbCaptcha"></TextBox>
+                <Button Click="RegenerateCapthcaClick">Сменить код</Button>
+            </StackPanel>
+            <Button IsEnabled="False" Name="bSignIn" Background="#498c51" Foreground="White" Click="SignIn_Click">Войти</Button>
+            <Button Margin="0 10" Background="#498c51" Foreground="White" Click="GuestSignIn_Click">Войти как гость</Button>
+        </StackPanel>
+    </Grid>
+</Window>
