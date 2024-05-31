@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34701.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JewelyShop", "JewelyShop\JewelyShop.csproj", "{6BB7CC9A-EBF3-4D1D-A15F-E3C786F6256E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{99BA5F54-B7C3-4789-957A-39A220353AF9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6BB7CC9A-EBF3-4D1D-A15F-E3C786F6256E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BB7CC9A-EBF3-4D1D-A15F-E3C786F6256E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BB7CC9A-EBF3-4D1D-A15F-E3C786F6256E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BB7CC9A-EBF3-4D1D-A15F-E3C786F6256E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99BA5F54-B7C3-4789-957A-39A220353AF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99BA5F54-B7C3-4789-957A-39A220353AF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99BA5F54-B7C3-4789-957A-39A220353AF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99BA5F54-B7C3-4789-957A-39A220353AF9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {58899E40-6E8B-4157-8DD7-D122E317C321}
+	EndGlobalSection
+EndGlobal
