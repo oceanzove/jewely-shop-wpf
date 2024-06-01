@@ -70,7 +70,7 @@ create table Product
 	ProductName nvarchar(max) not null,
 	ProductDescription nvarchar(max) not null,
 	ProductCategory int references ProductCategory(ProductCategoryID) not null,
-	ProductPhoto image,
+	ProductPhoto varchar(max) not null,
 	ProductManufacturer int references Manufacturer(ManufacturerID) not null,
 	ProductProvider int references [Provider](ProviderID) not null,
 	ProductUnit int references Unit(UintID) not null,

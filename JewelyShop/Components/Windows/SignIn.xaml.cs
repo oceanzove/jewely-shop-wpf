@@ -35,7 +35,7 @@ namespace JewelyShop.Components.Pages
         public SignIn(Database.TradeEntities entities)
         {
             InitializeComponent();
-            
+
             database = entities;
             random = new Random();
 
@@ -55,7 +55,7 @@ namespace JewelyShop.Components.Pages
         {
             bSignIn.IsEnabled = tbLogin.Text.Trim().Length > 0 && pbPassword.Password.Trim().Length > 0;
         }
-      
+
         private void SignIn_Click(object sender, RoutedEventArgs e)
         {
             if (isBlocked)
@@ -85,21 +85,30 @@ namespace JewelyShop.Components.Pages
 
             if (user != null)
             {
-                spCaptcha.Visibility = Visibility.Collapsed;
-                isRequireCaptcha = false;
-                tbCaptcha.Clear();
-
+           
+                if (isRequireCaptcha)
+                {
+                    spCaptcha.Visibility = Visibility.Collapsed;
+                    isRequireCaptcha = false;
+                    tbCaptcha.Clear();
+                }
                 switch (user.UserRole)
                 {
-                    case 4:
+                    case 2:
                         {
-
+                            GoToProductView();
+                        }
+                        break;
+                    case 3:
+                        {
+                            GoToProductView();
                         }
                         break;
 
                     default: break;
                 }
-            } else
+            }
+            else
             {
                 MessageBox.Show("Логин или пароль введены неверно. Попробуйте еще раз..", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 GenerateCapthca();
@@ -112,13 +121,22 @@ namespace JewelyShop.Components.Pages
         private void GuestSignIn_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Ты вошел как гость.", "Победа", MessageBoxButton.OK, MessageBoxImage.Information);
+            GoToProductView();
+        }
+
+        private void GoToProductView()
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+            mainWindow.AppFrame.Navigate(Components.ViewManager.ProductView);
+            this.Hide();
         }
 
         private void GenerateCapthca()
         {
             canvas.Children.Clear();
             captchaCode = GenerateCapthcaCode();
-            
+
             for (int i = 0; i < captchaCode.Length; i++)
             {
                 AddLetterToCanvas(i, captchaCode[i]);
@@ -140,7 +158,7 @@ namespace JewelyShop.Components.Pages
             return code;
         }
 
-        private void AddLetterToCanvas(int index,char ch)
+        private void AddLetterToCanvas(int index, char ch)
         {
             Label label = new Label();
             label.FontSize = random.Next(24, 32);

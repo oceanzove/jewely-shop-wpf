@@ -1,0 +1,44 @@
+﻿<Page x:Class="JewelyShop.Components.Pages.ProductView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:JewelyShop.Components.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ProductView">
+
+    <Grid>
+        <StackPanel HorizontalAlignment="Center">
+            <Image Source="/Media/logo.png" Width="50"/>
+            <TextBlock>Jewelry Shop</TextBlock>
+        </StackPanel>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top">Фамилия имя отвечтво</TextBlock>
+        <Button Name="bLogout" Click="bLogout_Click" VerticalAlignment="Bottom">Выйти</Button>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.2*"/>
+                <RowDefinition/>
+                <RowDefinition Height="0.2*"/>
+            </Grid.RowDefinitions>
+            <ListView Grid.Row="1" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Products}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <!--Картинка продукта-->
+                            <Border Grid.Column="0">
+                                <Image Source="/Media/Product/picture.png" Width="50" />
+                            </Border>
+                            
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</Page>

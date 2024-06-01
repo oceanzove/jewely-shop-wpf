@@ -33,6 +33,7 @@ namespace Database
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<Provider> Providers { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Unit> Units { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }

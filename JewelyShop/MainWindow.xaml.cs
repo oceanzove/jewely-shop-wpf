@@ -27,7 +27,7 @@ namespace JewelyShop
 
             var signInWindow = ViewManager.SignIn;
             signInWindow.Show();
-            this.Close();
+            this.Hide();
 
         }
     }

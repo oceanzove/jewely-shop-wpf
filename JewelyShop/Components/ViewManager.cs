@@ -12,7 +12,11 @@ namespace JewelyShop.Components
     {
         private static Database.TradeEntities database;
 
+        // Окна
         private static SignIn signIn;
+
+        // Страницы
+        private static ProductView productView;
 
         private static Database.TradeEntities Database
         {
@@ -30,6 +34,7 @@ namespace JewelyShop.Components
             }
         }
 
+        // Окна
         public static SignIn SignIn
         {
             get
@@ -41,5 +46,19 @@ namespace JewelyShop.Components
                 return signIn;
             }
         }
+        // Старницы
+        public static ProductView ProductView
+        {
+            get
+            {
+                if (productView == null)
+                {
+                    productView = new ProductView(Database);
+                }
+                return productView;
+            }
+        }
+
+        
     }
 }
