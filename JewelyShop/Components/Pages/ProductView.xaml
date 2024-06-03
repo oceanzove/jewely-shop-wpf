@@ -32,9 +32,8 @@
                             </Grid.ColumnDefinitions>
                             <!--Картинка продукта-->
                             <Border Grid.Column="0">
-                                <Image Source="/Media/Product/picture.png" Width="50" />
+                                <Image Source="{Binding ProductPhoto}" Width="50" />
                             </Border>
-                            
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

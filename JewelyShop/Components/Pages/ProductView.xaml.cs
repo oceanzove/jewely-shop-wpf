@@ -29,6 +29,17 @@ namespace JewelyShop.Components.Pages
             InitializeComponent();
             database = entities;
             Products = new ObservableCollection<Product>(database.Products);
+            foreach (var elem in Products)
+            {
+                if (elem.ProductPhoto == "")
+                {
+                    elem.ProductPhoto = "/Media/Product/picture.png";
+                } else
+                {
+                    elem.ProductPhoto = "/Media/Product/" + elem.ProductPhoto;
+                }
+
+            }
             DataContext = this;
         }
 
