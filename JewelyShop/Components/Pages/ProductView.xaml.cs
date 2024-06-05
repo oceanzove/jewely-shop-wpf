@@ -24,33 +24,41 @@ namespace JewelyShop.Components.Pages
     {
         public static Database.TradeEntities database;
         public ObservableCollection<Product> Products { get; set; }
-        public ProductView(Database.TradeEntities entities)
+        private string FullName;
+        public ProductView(Database.TradeEntities entities, ObservableCollection<Product> Products)
         {
             InitializeComponent();
-            database = entities;
-            Products = new ObservableCollection<Product>(database.Products);
-            foreach (var elem in Products)
-            {
-                if (elem.ProductPhoto == "")
-                {
-                    elem.ProductPhoto = "/Media/Product/picture.png";
-                } else
-                {
-                    elem.ProductPhoto = "/Media/Product/" + elem.ProductPhoto;
-                }
 
-            }
+            // Биндинг с установкой ФИО для окна
+            this.FullName = ViewManager.SignIn.getUserFullName();
+            Binding bFullName = new Binding();
+            bFullName.Source = this.FullName;
+            tbFullName.SetBinding(TextBlock.TextProperty, bFullName);
+
+            database = entities;
+
+            this.Products = Products;
+            //foreach (var elem in Products)
+            //{
+            //    if (elem.ProductPhoto.Length < 1)
+            //    {
+            //        elem.ProductPhoto = "/Media/Product/picture.png";
+            //    } else
+            //    {
+            //        elem.ProductPhoto = "/Media/Product/" + elem.ProductPhoto;
+            //    }
+            //}
             DataContext = this;
         }
 
         private void bLogout_Click(object sender, RoutedEventArgs e)
         {
+            var mainWindow = ViewManager.MainWindow;
+            mainWindow.Close();
+
             var signInWindow = ViewManager.SignIn;
             signInWindow.Show();
-            Window.GetWindow(this).Close();
-
            
-
         }
     }
 }

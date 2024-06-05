@@ -1,6 +1,8 @@
-﻿using JewelyShop.Components.Pages;
+﻿using Database;
+using JewelyShop.Components.Pages;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +15,7 @@ namespace JewelyShop.Components
         private static Database.TradeEntities database;
 
         // Окна
+        private static MainWindow mainWindow;
         private static SignIn signIn;
 
         // Страницы
@@ -39,11 +42,22 @@ namespace JewelyShop.Components
         {
             get
             {
-                if (signIn == null)
+                if (signIn == null || !signIn.IsVisible)
                 {
                     signIn = new SignIn(Database);
                 }
                 return signIn;
+            }
+        }
+        public static MainWindow MainWindow
+        {
+            get
+            {
+                if (mainWindow == null || !mainWindow.IsVisible)
+                {
+                    mainWindow = new MainWindow();
+                }
+                return mainWindow;
             }
         }
         // Старницы
@@ -51,9 +65,25 @@ namespace JewelyShop.Components
         {
             get
             {
+                var Products = new ObservableCollection<Product>(database.Products);
                 if (productView == null)
                 {
-                    productView = new ProductView(Database);
+                    foreach (var elem in Products)
+                    {
+                        if (elem.ProductPhoto.Length < 1)
+                        {
+                            elem.ProductPhoto = "/Media/Product/picture.png";
+                        }
+                        else
+                        {
+                            elem.ProductPhoto = "/Media/Product/" + elem.ProductPhoto;
+                        }
+                    }
+                    productView = new ProductView(Database, Products);
+                }
+                if (!productView.IsVisible)
+                {
+                    productView = new ProductView(Database, Products);
                 }
                 return productView;
             }

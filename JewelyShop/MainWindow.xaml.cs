@@ -25,9 +25,10 @@ namespace JewelyShop
         {
             InitializeComponent();
 
+
             var signInWindow = ViewManager.SignIn;
             signInWindow.Show();
-            this.Hide();
+            Window.GetWindow(this).Hide();
 
         }
     }

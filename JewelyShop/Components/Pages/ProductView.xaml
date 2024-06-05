@@ -13,7 +13,7 @@
             <Image Source="/Media/logo.png" Width="50"/>
             <TextBlock>Jewelry Shop</TextBlock>
         </StackPanel>
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top">Фамилия имя отвечтво</TextBlock>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top" Name="tbFullName" Padding="0 0 10 0"/>
         <Button Name="bLogout" Click="bLogout_Click" VerticalAlignment="Bottom">Выйти</Button>
         <Grid>
             <Grid.RowDefinitions>
@@ -26,13 +26,38 @@
                     <DataTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.2*"/>
                                 <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition Width="0.2*"/>
                             </Grid.ColumnDefinitions>
                             <!--Картинка продукта-->
-                            <Border Grid.Column="0">
+                            <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1">
                                 <Image Source="{Binding ProductPhoto}" Width="50" />
+                            </Border>
+
+                            <Border Grid.Column="1" 
+                                    BorderBrush="Black"
+                                    BorderThickness="1"
+                                    Margin="20 0">
+                                <StackPanel Margin="5">
+                                    <TextBlock>
+                                    <Run FontWeight="Bold" Foreground="Black" Text="{Binding ProductName}"/>
+                                    <LineBreak/>
+                                    <Run Text="{Binding ProductDescription}"/>
+                                    <LineBreak/>
+                                    <Run Text="{Binding Manufacturer.ManufacturerName}"/>  
+                                    <LineBreak/>
+                                    <Run Text="{Binding ProductCost}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock FontSize="24"
+                                           FontWeight="Bold"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Text="{Binding ProductQuantityInStock}"/>
                             </Border>
                         </Grid>
                     </DataTemplate>

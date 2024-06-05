@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Database;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,6 +32,8 @@ namespace JewelyShop.Components.Pages
         private DispatcherTimer timer;
         private bool isBlocked;
 
+        private string fullName;
+
 
         public SignIn(Database.TradeEntities entities)
         {
@@ -43,6 +46,11 @@ namespace JewelyShop.Components.Pages
             timer.Interval = TimeSpan.FromSeconds(10);
             timer.Tick += Timer_Tick;
             isBlocked = false;
+        }
+
+        public string getUserFullName()
+        {
+            return fullName;
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -85,13 +93,13 @@ namespace JewelyShop.Components.Pages
 
             if (user != null)
             {
-           
                 if (isRequireCaptcha)
                 {
                     spCaptcha.Visibility = Visibility.Collapsed;
                     isRequireCaptcha = false;
                     tbCaptcha.Clear();
                 }
+                fullName = user.UserName + " " + user.UserSurname + " " + user.UserPatronymic;
                 switch (user.UserRole)
                 {
                     case 2:
@@ -120,16 +128,23 @@ namespace JewelyShop.Components.Pages
         }
         private void GuestSignIn_Click(object sender, RoutedEventArgs e)
         {
+            if (isRequireCaptcha)
+            {
+                spCaptcha.Visibility = Visibility.Collapsed;
+                isRequireCaptcha = false;
+                tbCaptcha.Clear();
+            }
+            fullName = "Гость";
             MessageBox.Show("Ты вошел как гость.", "Победа", MessageBoxButton.OK, MessageBoxImage.Information);
             GoToProductView();
         }
 
         private void GoToProductView()
         {
-            MainWindow mainWindow = new MainWindow();
+            var mainWindow = ViewManager.MainWindow;
             mainWindow.Show();
             mainWindow.AppFrame.Navigate(Components.ViewManager.ProductView);
-            this.Hide();
+            Window.GetWindow(this).Hide();
         }
 
         private void GenerateCapthca()
