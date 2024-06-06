@@ -38,17 +38,17 @@ namespace JewelyShop.Components.Pages
             database = entities;
 
             this.Products = Products;
-            //foreach (var elem in Products)
-            //{
-            //    if (elem.ProductPhoto.Length < 1)
-            //    {
-            //        elem.ProductPhoto = "/Media/Product/picture.png";
-            //    } else
-            //    {
-            //        elem.ProductPhoto = "/Media/Product/" + elem.ProductPhoto;
-            //    }
-            //}
+            
             DataContext = this;
+        }
+
+        private void filter()
+        {
+            var view = CollectionViewSource.GetDefaultView(lvProducts.ItemsSource);
+            if (view == null)
+            {
+                return;
+            }
         }
 
         private void bLogout_Click(object sender, RoutedEventArgs e)
@@ -58,7 +58,7 @@ namespace JewelyShop.Components.Pages
 
             var signInWindow = ViewManager.SignIn;
             signInWindow.Show();
-           
         }
+
     }
 }

@@ -6,22 +6,38 @@
       xmlns:local="clr-namespace:JewelyShop.Components.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      Style="{StaticResource MainPageStyle}"
       Title="ProductView">
-
-    <Grid>
-        <StackPanel HorizontalAlignment="Center">
-            <Image Source="/Media/logo.png" Width="50"/>
-            <TextBlock>Jewelry Shop</TextBlock>
-        </StackPanel>
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top" Name="tbFullName" Padding="0 0 10 0"/>
+    <Grid Background="White">
+       
         <Button Name="bLogout" Click="bLogout_Click" VerticalAlignment="Bottom">Выйти</Button>
+        
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="0.1*"/>
                 <RowDefinition/>
                 <RowDefinition Height="0.2*"/>
             </Grid.RowDefinitions>
-            <ListView Grid.Row="1" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Products}">
+
+            <Grid Grid.Row="0">
+                <StackPanel HorizontalAlignment="Center">
+                    <Image Source="/Media/logo.png" Width="50"/>
+                    <TextBlock>Jewelry Shop</TextBlock>
+                </StackPanel>
+                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top" Name="tbFullName" Padding="0 0 10 0"/>
+            </Grid>
+            
+            <Grid Grid.Row="1">
+                <Border>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label>Поиск:</Label>
+                        <TextBox MinWidth="300" MaxWidth="300" MinHeight="20" MaxHeight="20" Name="tbSearch"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+            
+            <ListView Grid.Row="2" HorizontalContentAlignment="Stretch" Name="lvProducts" ItemsSource="{Binding Products}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -30,6 +46,19 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="0.2*"/>
                             </Grid.ColumnDefinitions>
+                            
+                            <!--Стиль при остуствие товара-->
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ProductQuantityInStock}" Value="0">
+                                            <Setter Property="Background" Value="DimGray"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            
                             <!--Картинка продукта-->
                             <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1">
                                 <Image Source="{Binding ProductPhoto}" Width="50" />
@@ -57,7 +86,8 @@
                                            FontWeight="Bold"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Center"
-                                           Text="{Binding ProductQuantityInStock}"/>
+                                           Text="{Binding ProductQuantityInStock}" />
+
                             </Border>
                         </Grid>
                     </DataTemplate>
