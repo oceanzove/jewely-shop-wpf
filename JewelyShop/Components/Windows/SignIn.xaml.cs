@@ -144,7 +144,7 @@ namespace JewelyShop.Components.Pages
             var mainWindow = ViewManager.MainWindow;
             mainWindow.Show();
             mainWindow.AppFrame.Navigate(Components.ViewManager.ProductView);
-            Window.GetWindow(this).Hide();
+            Window.GetWindow(this).Close();
         }
 
         private void GenerateCapthca()

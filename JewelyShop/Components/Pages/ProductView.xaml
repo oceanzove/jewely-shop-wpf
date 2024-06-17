@@ -9,9 +9,9 @@
       Style="{StaticResource MainPageStyle}"
       Title="ProductView">
     <Grid Background="White">
-       
+
         <Button Name="bLogout" Click="bLogout_Click" VerticalAlignment="Bottom">Выйти</Button>
-        
+
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.3*"/>
@@ -27,17 +27,33 @@
                 </StackPanel>
                 <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top" Name="tbFullName" Padding="0 0 10 0"/>
             </Grid>
-            
+
             <Grid Grid.Row="1">
-                <Border>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+                <!--Поиск-->
+                <Border Grid.Column="1" Margin="0 5">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Label>Поиск:</Label>
-                        <TextBox MinWidth="300" MaxWidth="300" MinHeight="20" MaxHeight="20" Name="tbSearch"/>
+                        <TextBox MinWidth="300"  Name="tbSearch" TextChanged="tbSearch_TextChanged"/>
                     </StackPanel>
                 </Border>
+                
+                <!--Сортировка по цене-->
+                <Border Grid.Column="2" Margin="15 5">
+                    <ComboBox SelectedIndex="0" SelectionChanged="cbCostSort_SelectionChanged" Name="cbSortCost">
+                        <TextBlock>Без сортировки</TextBlock>
+                        <TextBlock>По возрастанию</TextBlock>
+                        <TextBlock>По убыванию</TextBlock>
+                    </ComboBox>
+                </Border>
             </Grid>
-            
-            <ListView Grid.Row="2" HorizontalContentAlignment="Stretch" Name="lvProducts" ItemsSource="{Binding Products}">
+
+            <ListView Grid.Row="2" HorizontalContentAlignment="Stretch" Name="lvProducts" ItemsSource="{Binding FilteredProducts}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -46,7 +62,7 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="0.2*"/>
                             </Grid.ColumnDefinitions>
-                            
+
                             <!--Стиль при остуствие товара-->
                             <Grid.Style>
                                 <Style TargetType="Grid">
@@ -58,10 +74,10 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            
+
                             <!--Картинка продукта-->
                             <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1">
-                                <Image Source="{Binding ProductPhoto}" Width="50" />
+                                <Image Source="{Binding ProductPhoto}" Width="50"/>
                             </Border>
 
                             <Border Grid.Column="1" 
@@ -77,6 +93,7 @@
                                     <Run Text="{Binding Manufacturer.ManufacturerName}"/>  
                                     <LineBreak/>
                                     <Run Text="{Binding ProductCost}"/>
+                                     <Run Text=" руб."/>
                                     </TextBlock>
                                 </StackPanel>
                             </Border>

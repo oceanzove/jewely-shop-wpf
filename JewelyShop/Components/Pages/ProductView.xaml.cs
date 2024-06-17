@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace JewelyShop.Components.Pages
 {
@@ -24,9 +25,11 @@ namespace JewelyShop.Components.Pages
     {
         public static Database.TradeEntities database;
         public ObservableCollection<Product> Products { get; set; }
+        public ObservableCollection<Product> FilteredProducts { get; set; }
         private string FullName;
         public ProductView(Database.TradeEntities entities, ObservableCollection<Product> Products)
         {
+           
             InitializeComponent();
 
             // Биндинг с установкой ФИО для окна
@@ -38,17 +41,9 @@ namespace JewelyShop.Components.Pages
             database = entities;
 
             this.Products = Products;
-            
-            DataContext = this;
-        }
+            this.FilteredProducts = new ObservableCollection<Product>(this.Products);
 
-        private void filter()
-        {
-            var view = CollectionViewSource.GetDefaultView(lvProducts.ItemsSource);
-            if (view == null)
-            {
-                return;
-            }
+            DataContext = this;
         }
 
         private void bLogout_Click(object sender, RoutedEventArgs e)
@@ -60,5 +55,61 @@ namespace JewelyShop.Components.Pages
             signInWindow.Show();
         }
 
+        private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            filterProducts();
+            sortProductsByCost();
+        }
+        private void cbCostSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            sortProductsByCost();
+        }
+
+        private void filterProducts ()
+        {
+            var searchedText = tbSearch.Text.Trim().ToLower();
+            var searchedTerms = searchedText.Split(' ');
+            this.FilteredProducts.Clear();
+            foreach (var product in this.Products)
+            {
+                bool match = searchedTerms.All(term =>
+                    product.ProductName.ToLower().Contains(term) ||
+                    product.ProductDescription.ToLower().Contains(term) ||
+                    product.Manufacturer.ManufacturerName.ToLower().Contains(term) ||
+                    product.ProductCost.ToString().Contains(term) ||
+                    product.ProductQuantityInStock.ToString().Contains(term)
+                );
+                if (match)
+                {
+                    this.FilteredProducts.Add(product);
+                }
+            }
+        }
+        
+        private void sortProductsByCost ()
+        {
+            if (this.FilteredProducts == null)
+            {
+                return;
+            }
+            var selectedItem = cbSortCost.SelectedIndex;
+
+            // Сортировка по выбранному критерию
+            switch (selectedItem)
+            {
+                case 1: // По возрастанию
+                    this.FilteredProducts = new ObservableCollection<Product>(this.FilteredProducts.OrderBy(p => p.ProductCost));
+                    break;
+                case 2: // По убыванию
+                    this.FilteredProducts = new ObservableCollection<Product>(this.FilteredProducts.OrderByDescending(p => p.ProductCost));
+                    break;
+                default: // Без сортировки
+                    filterProducts();
+                    this.FilteredProducts = new ObservableCollection<Product>(this.FilteredProducts);
+                    break;
+            }
+            lvProducts.ItemsSource = this.FilteredProducts;
+        }
+        
     }
 }
