@@ -16,7 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace JewelyShop.Components.Pages
+namespace JewelyShop.Components.Windows
 {
     /// <summary>
     /// Логика взаимодействия для SignIn.xaml
@@ -135,16 +135,14 @@ namespace JewelyShop.Components.Pages
                 tbCaptcha.Clear();
             }
             fullName = "Гость";
-            MessageBox.Show("Ты вошел как гость.", "Победа", MessageBoxButton.OK, MessageBoxImage.Information);
             GoToProductView();
         }
 
         private void GoToProductView()
         {
-            var mainWindow = ViewManager.MainWindow;
-            mainWindow.Show();
-            mainWindow.AppFrame.Navigate(Components.ViewManager.ProductView);
-            Window.GetWindow(this).Close();
+            var productView = ViewManager.ProductView;
+            productView.Show();
+            Close();
         }
 
         private void GenerateCapthca()

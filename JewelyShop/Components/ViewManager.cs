@@ -1,5 +1,5 @@
 ﻿using Database;
-using JewelyShop.Components.Pages;
+using JewelyShop.Components.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,10 +15,7 @@ namespace JewelyShop.Components
         private static Database.TradeEntities database;
 
         // Окна
-        private static MainWindow mainWindow;
         private static SignIn signIn;
-
-        // Страницы
         private static ProductView productView;
 
         private static Database.TradeEntities Database
@@ -49,18 +46,6 @@ namespace JewelyShop.Components
                 return signIn;
             }
         }
-        public static MainWindow MainWindow
-        {
-            get
-            {
-                if (mainWindow == null || !mainWindow.IsVisible)
-                {
-                    mainWindow = new MainWindow();
-                }
-                return mainWindow;
-            }
-        }
-        // Старницы
         public static ProductView ProductView
         {
             get
@@ -88,7 +73,5 @@ namespace JewelyShop.Components
                 return productView;
             }
         }
-
-        
     }
 }

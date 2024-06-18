@@ -1,4 +1,6 @@
-﻿using System;
+﻿using JewelyShop.Components;
+using JewelyShop.Components.Windows;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +15,14 @@ namespace JewelyShop
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            // Вызов базовой реализации OnStartup
+            base.OnStartup(e);
+
+            // Использование ViewManager для отображения окна SignIn
+            var signInWindow = ViewManager.SignIn;
+            signInWindow.Show();
+        }
     }
 }

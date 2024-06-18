@@ -1,13 +1,12 @@
-﻿<Page x:Class="JewelyShop.Components.Pages.ProductView"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:JewelyShop.Components.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Style="{StaticResource MainPageStyle}"
-      Title="ProductView">
+﻿<Window x:Class="JewelyShop.Components.Windows.ProductView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JewelyShop.Components.Windows"
+        mc:Ignorable="d"
+        Style="{StaticResource MainWindowStyle}"
+        Title="ProductView" Height="600" Width="800" MinHeight="600" MinWidth="800" WindowStartupLocation="CenterScreen">
     <Grid Background="White">
 
         <Button Name="bLogout" Click="bLogout_Click" VerticalAlignment="Bottom">Выйти</Button>
@@ -34,7 +33,7 @@
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                
+
                 <!--Поиск-->
                 <Border Grid.Column="1" Margin="0 5">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -42,7 +41,7 @@
                         <TextBox MinWidth="300"  Name="tbSearch" TextChanged="tbSearch_TextChanged"/>
                     </StackPanel>
                 </Border>
-                
+
                 <!--Сортировка по цене-->
                 <Border Grid.Column="2" Margin="15 5">
                     <ComboBox SelectedIndex="0" SelectionChanged="cbCostSort_SelectionChanged" Name="cbSortCost">
@@ -81,29 +80,29 @@
                             </Border>
 
                             <Border Grid.Column="1" 
-                                    BorderBrush="Black"
-                                    BorderThickness="1"
-                                    Margin="20 0">
+                                BorderBrush="Black"
+                                BorderThickness="1"
+                                Margin="20 0">
                                 <StackPanel Margin="5">
                                     <TextBlock>
-                                    <Run FontWeight="Bold" Foreground="Black" Text="{Binding ProductName}"/>
-                                    <LineBreak/>
-                                    <Run Text="{Binding ProductDescription}"/>
-                                    <LineBreak/>
-                                    <Run Text="{Binding Manufacturer.ManufacturerName}"/>  
-                                    <LineBreak/>
-                                    <Run Text="{Binding ProductCost}"/>
-                                     <Run Text=" руб."/>
+                                <Run FontWeight="Bold" Foreground="Black" Text="{Binding ProductName}"/>
+                                <LineBreak/>
+                                <Run Text="{Binding ProductDescription}"/>
+                                <LineBreak/>
+                                <Run Text="{Binding Manufacturer.ManufacturerName}"/>  
+                                <LineBreak/>
+                                <Run Text="{Binding ProductCost}"/>
+                                 <Run Text=" руб."/>
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
 
                             <Border Grid.Column="2" BorderBrush="Black" BorderThickness="1">
                                 <TextBlock FontSize="24"
-                                           FontWeight="Bold"
-                                           VerticalAlignment="Center"
-                                           HorizontalAlignment="Center"
-                                           Text="{Binding ProductQuantityInStock}" />
+                                       FontWeight="Bold"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Text="{Binding ProductQuantityInStock}" />
 
                             </Border>
                         </Grid>
@@ -112,4 +111,4 @@
             </ListView>
         </Grid>
     </Grid>
-</Page>
+</Window>

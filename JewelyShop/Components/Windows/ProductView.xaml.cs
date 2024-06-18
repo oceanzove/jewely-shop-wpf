@@ -12,16 +12,14 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace JewelyShop.Components.Pages
+namespace JewelyShop.Components.Windows
 {
     /// <summary>
     /// Логика взаимодействия для ProductView.xaml
     /// </summary>
-    public partial class ProductView : Page
+    public partial class ProductView : Window
     {
         public static Database.TradeEntities database;
         public ObservableCollection<Product> Products { get; set; }
@@ -29,7 +27,7 @@ namespace JewelyShop.Components.Pages
         private string FullName;
         public ProductView(Database.TradeEntities entities, ObservableCollection<Product> Products)
         {
-           
+
             InitializeComponent();
 
             // Биндинг с установкой ФИО для окна
@@ -48,11 +46,9 @@ namespace JewelyShop.Components.Pages
 
         private void bLogout_Click(object sender, RoutedEventArgs e)
         {
-            var mainWindow = ViewManager.MainWindow;
-            mainWindow.Close();
-
             var signInWindow = ViewManager.SignIn;
             signInWindow.Show();
+            Close();
         }
 
         private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
@@ -65,7 +61,7 @@ namespace JewelyShop.Components.Pages
             sortProductsByCost();
         }
 
-        private void filterProducts ()
+        private void filterProducts()
         {
             var searchedText = tbSearch.Text.Trim().ToLower();
             var searchedTerms = searchedText.Split(' ');
@@ -85,8 +81,8 @@ namespace JewelyShop.Components.Pages
                 }
             }
         }
-        
-        private void sortProductsByCost ()
+
+        private void sortProductsByCost()
         {
             if (this.FilteredProducts == null)
             {
@@ -110,6 +106,6 @@ namespace JewelyShop.Components.Pages
             }
             lvProducts.ItemsSource = this.FilteredProducts;
         }
-        
+
     }
 }
