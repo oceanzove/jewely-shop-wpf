@@ -9,21 +9,20 @@
         Title="ProductView" Height="600" Width="800" MinHeight="600" MinWidth="800" WindowStartupLocation="CenterScreen">
     <Grid Background="White">
 
-        <Button Name="bLogout" Click="bLogout_Click" VerticalAlignment="Bottom">Выйти</Button>
 
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.3*"/>
                 <RowDefinition Height="0.1*"/>
-                <RowDefinition/>
-                <RowDefinition Height="0.2*"/>
+                <RowDefinition />
+                <RowDefinition Height="0.05*"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 0">
-                    <TextBlock Name="tbSelectedProductsCount"/>
-                    <TextBlock Text=" / "/>
-                    <TextBlock Name="tbProductsCount" Text="{Binding ProductsCount}"/>
+                    <TextBlock Name="tbSelectedProductsCount" />
+                    <TextBlock Text=" / " />
+                    <TextBlock Name="tbProductsCount" />
                 </StackPanel>
                
                 <StackPanel HorizontalAlignment="Center">
@@ -41,7 +40,7 @@
                 </Grid.ColumnDefinitions>
                 <!--Сортировака по производителям-->
                 <Border Margin="15 5">
-                    <ComboBox SelectedIndex="2" SelectionChanged="cbSortManufacturer_SelectionChanged" Name="cbSortManufacturer"
+                    <ComboBox SelectedIndex="2" SelectionChanged="cbSort_SelectionChanged" Name="cbSortManufacturer"
                               ItemsSource="{Binding Manufacturers}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -56,13 +55,13 @@
                 <Border Grid.Column="1" Margin="0 5">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Label>Поиск:</Label>
-                        <TextBox MinWidth="300"  Name="tbSearch" TextChanged="tbSearch_TextChanged"/>
+                        <TextBox MinWidth="300"  Name="tbSearch" TextChanged="applyFilter_Changed"/>
                     </StackPanel>
                 </Border>
 
                 <!--Сортировка по цене-->
                 <Border Grid.Column="2" Margin="15 5">
-                    <ComboBox SelectedIndex="0" SelectionChanged="cbCostSort_SelectionChanged" Name="cbSortCost">
+                    <ComboBox SelectedIndex="0" SelectionChanged="cbSort_SelectionChanged" Name="cbSortCost">
                         <TextBlock>Без сортировки</TextBlock>
                         <TextBlock>По возрастанию</TextBlock>
                         <TextBlock>По убыванию</TextBlock>
@@ -70,63 +69,11 @@
                 </Border>
             </Grid>
 
-            <ListView Grid.Row="2" HorizontalContentAlignment="Stretch" Name="lvProducts" ItemsSource="{Binding FilteredProducts}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.2*"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="0.2*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <!--Стиль при остуствие товара-->
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Background" Value="Transparent" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ProductQuantityInStock}" Value="0">
-                                            <Setter Property="Background" Value="DimGray"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-
-                            <!--Картинка продукта-->
-                            <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1">
-                                <Image Source="{Binding ProductPhoto}" Width="50"/>
-                            </Border>
-
-                            <Border Grid.Column="1" 
-                                BorderBrush="Black"
-                                BorderThickness="1"
-                                Margin="20 0">
-                                <StackPanel Margin="5">
-                                    <TextBlock>
-                                <Run FontWeight="Bold" Foreground="Black" Text="{Binding ProductName}"/>
-                                <LineBreak/>
-                                <Run Text="{Binding ProductDescription}"/>
-                                <LineBreak/>
-                                <Run Text="{Binding Manufacturer.ManufacturerName}"/>  
-                                <LineBreak/>
-                                <Run Text="{Binding ProductCost}"/>
-                                 <Run Text=" руб."/>
-                                    </TextBlock>
-                                </StackPanel>
-                            </Border>
-
-                            <Border Grid.Column="2" BorderBrush="Black" BorderThickness="1">
-                                <TextBlock FontSize="24"
-                                       FontWeight="Bold"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"
-                                       Text="{Binding ProductQuantityInStock}" />
-
-                            </Border>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
+            <ListView Grid.Row="2" HorizontalContentAlignment="Stretch" Name="lvProducts">
             </ListView>
+            <Border Grid.Row="3">
+                <Button Name="bLogout"  Click="bLogout_Click" VerticalAlignment="Center">Выйти</Button>
+            </Border>
         </Grid>
     </Grid>
 </Window>

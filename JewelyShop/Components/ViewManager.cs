@@ -50,25 +50,9 @@ namespace JewelyShop.Components
         {
             get
             {
-                var Products = new ObservableCollection<Product>(database.Products);
-                if (productView == null)
+                if (productView == null || !productView.IsVisible)
                 {
-                    foreach (var elem in Products)
-                    {
-                        if (elem.ProductPhoto.Length < 1)
-                        {
-                            elem.ProductPhoto = "/Media/Product/picture.png";
-                        }
-                        else
-                        {
-                            elem.ProductPhoto = "/Media/Product/" + elem.ProductPhoto;
-                        }
-                    }
-                    productView = new ProductView(Database, Products);
-                }
-                if (!productView.IsVisible)
-                {
-                    productView = new ProductView(Database, Products);
+                    productView = new ProductView(Database);
                 }
                 return productView;
             }

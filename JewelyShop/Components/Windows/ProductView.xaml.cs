@@ -1,8 +1,10 @@
 ﻿using Database;
+using JewelyShop.Components.Frame;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,39 +24,91 @@ namespace JewelyShop.Components.Windows
     public partial class ProductView : Window
     {
         public static Database.TradeEntities database;
-        public ObservableCollection<Product> Products { get; set; }
         public ObservableCollection<Product> FilteredProducts { get; set; } 
         public ObservableCollection<Manufacturer> Manufacturers { get; set; }
-        public int ProductsCount => Products?.Count() ?? 0;
+        public int ProductsCount;
         public int SelectedProductsCount;
-        
 
+
+        private Database.User User;
         private string FullName;
-        public ProductView(Database.TradeEntities entities, ObservableCollection<Product> Products)
+
+        public ProductView(Database.TradeEntities entities)
         {
 
             InitializeComponent();
 
-            // Биндинг с установкой ФИО для окна
-            this.FullName = ViewManager.SignIn.getUserFullName();
-            Binding bFullName = new Binding();
-            bFullName.Source = this.FullName;
-            tbFullName.SetBinding(TextBlock.TextProperty, bFullName);
+           
 
             database = entities;
+            DataContext = this;
 
             // Бинлдинг для комбо-бокса с производителями
             Manufacturers = new ObservableCollection<Manufacturer>(database.Manufacturers)
             {
                 new Manufacturer { ManufacturerID = 3, ManufacturerName = "Все производители" }
             };
-           
-            this.Products = Products;
-            this.FilteredProducts = new ObservableCollection<Product>(this.Products);
-            
-            DataContext = this;
+
+            this.FilteredProducts = new ObservableCollection<Product>(database.Products);
+
+            updateProducts();
+            setUser();
         }
 
+        public void updateProducts()
+        {
+            if (lvProducts != null)
+            {
+                lvProducts.Items.Clear();
+            }
+            if (this.FilteredProducts != null)
+            {
+                foreach (var product in this.FilteredProducts)
+                {
+                    ProductFrame productFrame = new ProductFrame(product, User?.Role, this);
+                    lvProducts.Items.Add(productFrame);
+                }
+            }
+        }
+        
+        public void deleteProduct(Database.Product product)
+        {
+            try
+            {
+                var itemOrdered = database.OrderProducts.Where(p => p.ProductArticleNumber == product.ProductArticleNumber).FirstOrDefault();
+                if (itemOrdered != null)
+                {
+                    MessageBox.Show("Удаление товара " + product.ProductArticleNumber + " " + product.ProductName + " не возможно", "Ошибка удаления", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                database.Products.Remove(product);
+                this.FilteredProducts.Remove(product);
+                database.SaveChanges();
+            }
+            catch
+            {
+                MessageBox.Show("Удаление товара " + product.ProductArticleNumber + " " + product.ProductName + " не возможно", "Ошибка удаления", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            setProductCounts();
+            updateProducts();
+        }
+
+        private void setUser()
+        {
+             this.User = ViewManager.SignIn.getUser();
+            if (User == null)
+            {
+                this.FullName = "Гость";
+            } else
+            {
+                this.FullName = User.Role.RoleName + ": " + User.UserName + " " + User.UserSurname + " " + User.UserPatronymic;
+            }
+
+            Binding bFullName = new Binding();
+            bFullName.Source = this.FullName;
+            tbFullName.SetBinding(TextBlock.TextProperty, bFullName);
+        }
+   
         private void bLogout_Click(object sender, RoutedEventArgs e)
         {
             var signInWindow = ViewManager.SignIn;
@@ -62,33 +116,41 @@ namespace JewelyShop.Components.Windows
             Close();
         }
 
-        private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
+        private void applyFilter_Changed(object sender, TextChangedEventArgs e)
         {
             applyFilter();
-        }
-        private void cbCostSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            sortProductsByCost();
         }
 
-        private void cbSortManufacturer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cbSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             applyFilter();
         }
+
 
         private void applyFilter()
         {
             filterProducts();
             sortProductsByCost();
+            setProductCounts();
+            updateProducts();
+        }
+
+        private void setProductCounts()
+        {
+            setProductsCount();
             setSelectedProductsCount();
         }
 
         private void filterProducts()
         {
+            if (this.FilteredProducts == null)
+            {
+                return;
+            }
             var searchedText = tbSearch.Text.Trim().ToLower();
             var searchedTerms = searchedText.Split(' ');
             this.FilteredProducts.Clear();
-            foreach (var product in this.Products)
+            foreach (var product in database.Products)
             {
                 bool match = searchedTerms.All(term =>
                     product.ProductName.ToLower().Contains(term) ||
@@ -134,14 +196,29 @@ namespace JewelyShop.Components.Windows
                     this.FilteredProducts = new ObservableCollection<Product>(this.FilteredProducts);
                     break;
             }
-            lvProducts.ItemsSource = this.FilteredProducts;
         }
 
+        private void setProductsCount()
+        {
+            if (this.FilteredProducts == null)
+            {
+                return;
+            }
+            Binding bCount = new Binding();
+            bCount.Source = database.Products.Count();
+            tbProductsCount.SetBinding(TextBlock.TextProperty, bCount);
+        }
         private void setSelectedProductsCount()
         {
+            if (this.FilteredProducts == null)
+            {
+                return;
+            }
             Binding bCount = new Binding();
             bCount.Source = this.FilteredProducts.Count();
             tbSelectedProductsCount.SetBinding(TextBlock.TextProperty, bCount);
         }
+
+        
     }
 }

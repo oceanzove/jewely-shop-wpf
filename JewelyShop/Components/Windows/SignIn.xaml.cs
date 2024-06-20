@@ -32,7 +32,7 @@ namespace JewelyShop.Components.Windows
         private DispatcherTimer timer;
         private bool isBlocked;
 
-        private string fullName;
+        private Database.User user;
 
 
         public SignIn(Database.TradeEntities entities)
@@ -48,9 +48,9 @@ namespace JewelyShop.Components.Windows
             isBlocked = false;
         }
 
-        public string getUserFullName()
+        public Database.User getUser()
         {
-            return fullName;
+            return this.user;
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -99,22 +99,8 @@ namespace JewelyShop.Components.Windows
                     isRequireCaptcha = false;
                     tbCaptcha.Clear();
                 }
-                fullName = user.UserName + " " + user.UserSurname + " " + user.UserPatronymic;
-                switch (user.UserRole)
-                {
-                    case 2:
-                        {
-                            GoToProductView();
-                        }
-                        break;
-                    case 3:
-                        {
-                            GoToProductView();
-                        }
-                        break;
-
-                    default: break;
-                }
+                this.user = user;
+                GoToProductView();
             }
             else
             {
@@ -134,7 +120,7 @@ namespace JewelyShop.Components.Windows
                 isRequireCaptcha = false;
                 tbCaptcha.Clear();
             }
-            fullName = "Гость";
+            user = null;
             GoToProductView();
         }
 
