@@ -25,6 +25,10 @@ namespace JewelyShop.Components.Windows
         public ObservableCollection<Product> Products { get; set; }
         public ObservableCollection<Product> FilteredProducts { get; set; } 
         public ObservableCollection<Manufacturer> Manufacturers { get; set; }
+        public int ProductsCount => Products?.Count() ?? 0;
+        public int SelectedProductsCount;
+        
+
         private string FullName;
         public ProductView(Database.TradeEntities entities, ObservableCollection<Product> Products)
         {
@@ -47,7 +51,7 @@ namespace JewelyShop.Components.Windows
            
             this.Products = Products;
             this.FilteredProducts = new ObservableCollection<Product>(this.Products);
-
+            
             DataContext = this;
         }
 
@@ -60,8 +64,7 @@ namespace JewelyShop.Components.Windows
 
         private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            filterProducts();
-            sortProductsByCost();
+            applyFilter();
         }
         private void cbCostSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -70,8 +73,14 @@ namespace JewelyShop.Components.Windows
 
         private void cbSortManufacturer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            applyFilter();
+        }
+
+        private void applyFilter()
+        {
             filterProducts();
             sortProductsByCost();
+            setSelectedProductsCount();
         }
 
         private void filterProducts()
@@ -126,6 +135,13 @@ namespace JewelyShop.Components.Windows
                     break;
             }
             lvProducts.ItemsSource = this.FilteredProducts;
+        }
+
+        private void setSelectedProductsCount()
+        {
+            Binding bCount = new Binding();
+            bCount.Source = this.FilteredProducts.Count();
+            tbSelectedProductsCount.SetBinding(TextBlock.TextProperty, bCount);
         }
     }
 }

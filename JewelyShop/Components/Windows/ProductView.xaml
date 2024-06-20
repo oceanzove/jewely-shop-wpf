@@ -20,6 +20,12 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 0">
+                    <TextBlock Name="tbSelectedProductsCount"/>
+                    <TextBlock Text=" / "/>
+                    <TextBlock Name="tbProductsCount" Text="{Binding ProductsCount}"/>
+                </StackPanel>
+               
                 <StackPanel HorizontalAlignment="Center">
                     <Image Source="/Media/logo.png" Width="50"/>
                     <TextBlock>Jewelry Shop</TextBlock>
