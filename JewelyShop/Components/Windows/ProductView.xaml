@@ -33,7 +33,19 @@
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-
+                <!--Сортировака по производителям-->
+                <Border Margin="15 5">
+                    <ComboBox SelectedIndex="2" SelectionChanged="cbSortManufacturer_SelectionChanged" Name="cbSortManufacturer"
+                              ItemsSource="{Binding Manufacturers}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock Text="{Binding ManufacturerName}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Border>
                 <!--Поиск-->
                 <Border Grid.Column="1" Margin="0 5">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

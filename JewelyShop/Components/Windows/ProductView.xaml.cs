@@ -23,7 +23,8 @@ namespace JewelyShop.Components.Windows
     {
         public static Database.TradeEntities database;
         public ObservableCollection<Product> Products { get; set; }
-        public ObservableCollection<Product> FilteredProducts { get; set; }
+        public ObservableCollection<Product> FilteredProducts { get; set; } 
+        public ObservableCollection<Manufacturer> Manufacturers { get; set; }
         private string FullName;
         public ProductView(Database.TradeEntities entities, ObservableCollection<Product> Products)
         {
@@ -38,6 +39,12 @@ namespace JewelyShop.Components.Windows
 
             database = entities;
 
+            // Бинлдинг для комбо-бокса с производителями
+            Manufacturers = new ObservableCollection<Manufacturer>(database.Manufacturers)
+            {
+                new Manufacturer { ManufacturerID = 3, ManufacturerName = "Все производители" }
+            };
+           
             this.Products = Products;
             this.FilteredProducts = new ObservableCollection<Product>(this.Products);
 
@@ -61,6 +68,12 @@ namespace JewelyShop.Components.Windows
             sortProductsByCost();
         }
 
+        private void cbSortManufacturer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            filterProducts();
+            sortProductsByCost();
+        }
+
         private void filterProducts()
         {
             var searchedText = tbSearch.Text.Trim().ToLower();
@@ -77,7 +90,15 @@ namespace JewelyShop.Components.Windows
                 );
                 if (match)
                 {
-                    this.FilteredProducts.Add(product);
+                    if (cbSortManufacturer.SelectedValue == Manufacturers[2])
+                    {
+                        this.FilteredProducts.Add(product);
+                        continue;
+                    }
+                    if (cbSortManufacturer.SelectedItem == product.Manufacturer)
+                    {
+                        this.FilteredProducts.Add(product);
+                    }
                 }
             }
         }
@@ -106,6 +127,5 @@ namespace JewelyShop.Components.Windows
             }
             lvProducts.ItemsSource = this.FilteredProducts;
         }
-
     }
 }
