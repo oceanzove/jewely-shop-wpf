@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 
 namespace JewelyShop.Components.Windows
 {
@@ -25,7 +26,8 @@ namespace JewelyShop.Components.Windows
     {
         public static Database.TradeEntities database;
         public ObservableCollection<Product> FilteredProducts { get; set; } 
-        public ObservableCollection<Manufacturer> Manufacturers { get; set; }
+        private ObservableCollection<Manufacturer> Manufacturers { get; set; }
+        public ObservableCollection<Manufacturer> SotrtedManufacturers { get; set; }
         public int ProductsCount;
         public int SelectedProductsCount;
 
@@ -43,11 +45,7 @@ namespace JewelyShop.Components.Windows
             database = entities;
             DataContext = this;
 
-            // Бинлдинг для комбо-бокса с производителями
-            Manufacturers = new ObservableCollection<Manufacturer>(database.Manufacturers)
-            {
-                new Manufacturer { ManufacturerID = 3, ManufacturerName = "Все производители" }
-            };
+            setManufacturers();
 
             this.FilteredProducts = new ObservableCollection<Product>(database.Products);
 
@@ -65,12 +63,38 @@ namespace JewelyShop.Components.Windows
             {
                 foreach (var product in this.FilteredProducts)
                 {
-                    ProductFrame productFrame = new ProductFrame(product, User?.Role, this);
+                    ProductFrame productFrame = new ProductFrame(product, this.Manufacturers, User?.Role, this);
                     lvProducts.Items.Add(productFrame);
                 }
             }
         }
-        
+
+        public void saveProduct(string name, string description, Database.Manufacturer manufacturer, decimal cost, int quantityInStock, Database.Product product)
+        {
+            if (name != product.ProductName)
+            {
+                product.ProductName = name;
+            }
+            if (description != product.ProductDescription)
+            {
+                product.ProductDescription = description;
+            }
+            if (manufacturer != product.Manufacturer)
+            {
+                product.Manufacturer = manufacturer;
+            }
+            if (cost != product.ProductCost)
+            {
+                product.ProductCost = cost;
+            }
+            if (quantityInStock != product.ProductQuantityInStock)
+            {
+                product.ProductQuantityInStock = quantityInStock;
+            }
+            database.SaveChanges();
+            updateProducts();
+        }
+
         public void deleteProduct(Database.Product product)
         {
             try
@@ -108,7 +132,7 @@ namespace JewelyShop.Components.Windows
             bFullName.Source = this.FullName;
             tbFullName.SetBinding(TextBlock.TextProperty, bFullName);
         }
-   
+
         private void bLogout_Click(object sender, RoutedEventArgs e)
         {
             var signInWindow = ViewManager.SignIn;
@@ -161,7 +185,7 @@ namespace JewelyShop.Components.Windows
                 );
                 if (match)
                 {
-                    if (cbSortManufacturer.SelectedValue == Manufacturers[2])
+                    if (cbSortManufacturer.SelectedValue == SotrtedManufacturers[2])
                     {
                         this.FilteredProducts.Add(product);
                         continue;
@@ -192,7 +216,6 @@ namespace JewelyShop.Components.Windows
                     this.FilteredProducts = new ObservableCollection<Product>(this.FilteredProducts.OrderByDescending(p => p.ProductCost));
                     break;
                 default: // Без сортировки
-                    filterProducts();
                     this.FilteredProducts = new ObservableCollection<Product>(this.FilteredProducts);
                     break;
             }
@@ -219,6 +242,14 @@ namespace JewelyShop.Components.Windows
             tbSelectedProductsCount.SetBinding(TextBlock.TextProperty, bCount);
         }
 
+        private void setManufacturers()
+        {
+            Manufacturers = new ObservableCollection<Manufacturer>(database.Manufacturers);
+            SotrtedManufacturers = new ObservableCollection<Manufacturer>(database.Manufacturers)
+            {
+                new Manufacturer { ManufacturerID = 3, ManufacturerName = "Все производители" }
+            };
+        }
         
     }
 }

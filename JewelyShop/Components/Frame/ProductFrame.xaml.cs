@@ -2,6 +2,7 @@
 using JewelyShop.Components.Windows;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
@@ -33,19 +35,20 @@ namespace JewelyShop.Components.Frame
 
         public string ProductName { get; set; }
         public string ProductPhoto { get; set; }
-        public string ManufacturerName { get; set; }
+        public Database.Manufacturer Manufacturer { get; set; }
         public string ProductDescription { get; set; }
         public decimal ProductCost { get; set; }
         public int ProductQuantityInStock { get; set; }
 
+        public ObservableCollection<Manufacturer> Manufacturers { get; set; }
 
 
-
-        public ProductFrame(Database.Product product, Database.Role role, ProductView productView)
+        public ProductFrame(Database.Product product, ObservableCollection<Manufacturer> manufacturers, Database.Role role, ProductView productView)
         {
             InitializeComponent();
 
             this.Product = product;
+            this.Manufacturers = manufacturers;
             this.Role = role;
             this.ProductView = productView;
 
@@ -55,6 +58,7 @@ namespace JewelyShop.Components.Frame
 
             setProductContext();
             setVisability();
+
         }
 
         private void setVisability()
@@ -87,7 +91,7 @@ namespace JewelyShop.Components.Frame
             ProductDescription = Product.ProductDescription;
             if (Product.Manufacturer != null)
             {
-                ManufacturerName = Product.Manufacturer.ManufacturerName;
+                Manufacturer = Product.Manufacturer;
             }
             ProductCost = Product.ProductCost;
 
@@ -103,12 +107,54 @@ namespace JewelyShop.Components.Frame
         }
         private void setAdminVisability()
         {
-            bAdminaDeleteButton.Visibility = Visibility.Visible;
+            bAdminDeleteButton.Visibility = Visibility.Visible;
+            bAdminEditButton.Visibility = Visibility.Visible;
         }
 
         private void deleteProduct_Click(object sender, RoutedEventArgs e)
         {
             this.ProductView.deleteProduct(this.Product);
+        }
+
+        private void ToogleEditMode_Click(object sender, RoutedEventArgs e)
+        {
+            if (Role.RoleID != ADMIN_ROLE)
+            {
+                return;
+            }
+            toggleEditMode();
+        }
+        
+        private void toggleEditMode()
+        {
+            if (gProductEdit.Visibility == Visibility.Visible)
+            {
+                bAdminEditButton.RenderTransform = new RotateTransform(0, bAdminEditButton.ActualWidth / 2, bAdminEditButton.ActualHeight / 2);
+                gProductEdit.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                bAdminEditButton.RenderTransform = new RotateTransform(180, bAdminEditButton.ActualWidth / 2, bAdminEditButton.ActualHeight / 2);
+                gProductEdit.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void SaveProduct_Click(object sender, RoutedEventArgs e)
+        {
+            var name = tbName.Text.Trim();
+            var description = tbDescription.Text.Trim();
+            var manufacturer = cbManufacturer.SelectedItem as Database.Manufacturer;
+            decimal cost;
+            if (!decimal.TryParse(tbCost.Text.Trim().Replace('.', ','), out cost))
+            {
+                // Обработка ошибки: вывод сообщения или выполнение другого действия
+                MessageBox.Show("Введите корректное значение для стоимости.");
+                return;
+            }
+            var quantityInStock = int.Parse(tbQuantityInStock.Text.Trim());
+
+            this.ProductView.saveProduct(name, description, manufacturer, cost, quantityInStock, this.Product);
+            toggleEditMode();
         }
     }
 }

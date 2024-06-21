@@ -7,59 +7,116 @@
              mc:Ignorable="d" 
              FontFamily="Comic Sans MS"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.2*"/>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="0.2*"/>
-        </Grid.ColumnDefinitions>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
-        <!--Стиль при остуствие товара-->
-        <Grid.Style>
-            <Style TargetType="Grid">
-                <Setter Property="Background" Value="Transparent" />
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding ProductQuantityInStock}" Value="0">
-                        <Setter Property="Background" Value="DimGray"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Grid.Style>
+        <!--Сетка продукта-->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.2*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0.2*"/>
+            </Grid.ColumnDefinitions>
+            <!--Стиль при остуствие товара-->
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ProductQuantityInStock}" Value="0">
+                            <Setter Property="Background" Value="DimGray"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
 
 
-        <!--Картинка продукта-->
-        <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1">
-            <Image Source="{Binding ProductPhoto}" Width="50"/>
-        </Border>
+            <!--Картинка продукта-->
+            <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                <Image Source="{Binding ProductPhoto}" Width="50"/>
+            </Border>
 
-        <Border Grid.Column="1" 
-        BorderBrush="Black"
-        BorderThickness="1"
-        Margin="20 0">
-            <StackPanel Margin="5">
-                <TextBlock>
-        <Run FontWeight="Bold" Foreground="Black" Text="{Binding ProductName}"/>
-        <LineBreak/>
-        <Run Text="{Binding ProductDescription}"/>
-        <LineBreak/>
-        <Run Text="{Binding ManufacturerName}"/>  
-        <LineBreak/>
-        <Run Text="{Binding ProductCost}"/>
-         <Run Text=" руб."/>
-                </TextBlock>
+            <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="20 0">
+                <StackPanel Margin="5">
+                    <TextBlock>
+                        <Run FontWeight="Bold" Foreground="Black" Text="{Binding ProductName}"/>
+                        <LineBreak/>
+                        <Run Text="{Binding ProductDescription}"/>
+                        <LineBreak/>
+                        <Run Text="{Binding Manufacturer.ManufacturerName}"/>  
+                        <LineBreak/>
+                        <Run Text="{Binding ProductCost}"/>
+                        <Run Text=" руб."/>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2" BorderBrush="Black" BorderThickness="1">
+                <TextBlock FontSize="24"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Text="{Binding ProductQuantityInStock}" />
+            </Border>
+            <Border Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="Hidden" Name="bAdminDeleteButton">
+                <Button Background="Red" Foreground="White" Click="deleteProduct_Click" Height="20" Width="20">x</Button>
+            </Border>
+            <Border Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Visibility="Hidden" Name="bAdminEditButton">
+                <Button Background="#498c51" RenderTransformOrigin="0.5 0.5" Foreground="White" Height="20" Width="20"
+                        Click="ToogleEditMode_Click">
+                    <Button.RenderTransform>
+                        <RotateTransform Angle="90"/>
+                    </Button.RenderTransform>
+                      >
+                </Button>
+            </Border>
+        </Grid>
+        <!--Админ сетка продукта-->
+        <Grid Grid.Row="1" Visibility="Collapsed" Name="gProductEdit">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Row="0" Grid.Column="0">
+                <Label>Название товара</Label>
+                <TextBox Name="tbName" Text="{Binding ProductName}"/>
             </StackPanel>
-        </Border>
-
-        <Border Grid.Column="2" BorderBrush="Black" BorderThickness="1">
-            <TextBlock FontSize="24"
-               FontWeight="Bold"
-               VerticalAlignment="Center"
-               HorizontalAlignment="Center"
-               Text="{Binding ProductQuantityInStock}" />
-
-        </Border>
-        <Border Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="Hidden" Name="bAdminaDeleteButton">
-            <Button Background="Red" Foreground="White" Click="deleteProduct_Click">x</Button>
-        </Border>
+            <StackPanel Grid.Row="0" Grid.Column="1">
+                <Label>Описание товара</Label>
+                <TextBox Name="tbDescription" Text="{Binding ProductDescription}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="2">
+                <Label>Производитель</Label>
+                <ComboBox Name="cbManufacturer" ItemsSource="{Binding Manufacturers}" SelectedItem="{Binding Manufacturer}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock Text="{Binding ManufacturerName}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="0">
+                <Label>Цена товара</Label>
+                <TextBox Name="tbCost" Text="{Binding ProductCost}" />
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1">
+                <Label>Количества товара</Label>
+                <TextBox Name="tbQuantityInStock" Text="{Binding ProductQuantityInStock}" />
+            </StackPanel>
+            <Border Grid.Row="1" Grid.Column="2">
+                <Button Background="#498c51" Foreground="White" Click="SaveProduct_Click">Сохранить</Button>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

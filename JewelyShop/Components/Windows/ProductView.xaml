@@ -41,7 +41,7 @@
                 <!--Сортировака по производителям-->
                 <Border Margin="15 5">
                     <ComboBox SelectedIndex="2" SelectionChanged="cbSort_SelectionChanged" Name="cbSortManufacturer"
-                              ItemsSource="{Binding Manufacturers}">
+                              ItemsSource="{Binding SotrtedManufacturers}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
